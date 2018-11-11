@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>
+            Choose Test
+        </title>
+        <script>
+            //add loading gif in ready state == 2?
+
+
+        var obj={
+				xhr:new XMLHttpRequest(),
+				async:function(subcode){
+					var subjectcode=subcode;
+                    //alert(subjectcode);
+					this.xhr.onreadystatechange=this.update;
+					this.xhr.open("GET","process_test.php?sub_code="+subjectcode,true);
+					this.xhr.send();
+				},
+				update:function(){
+					if(this.readyState==4 && this.status==200){
+						var res=this.responseText;
+						/*The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string. */
+						//var resJSON=JSON.parse(res);
+                        //var par = document.getElementById("resp");
+                        var startbutton = document.createElement("input");
+                        startbutton.type="button"
+                        startbutton.onclick = function(){window.location = "testingarea.html";}
+                        startbutton.value = res;
+                        document.body.appendChild(startbutton);
+
+					
+					}
+				}
+			
+			
+			}
+
+        
+        
+        </script>
+    </head>
+    <body>
+        <p>Choose test</p>
+        <input type="button" onclick="obj.async('OS')" value="OS"/>
+        <p id="resp"></p>
+    </body>
+</html>

@@ -1,0 +1,92 @@
+<html>
+    <head>
+        <title>
+            Test
+        </title>
+        <script>
+            var ques= {
+                xhr:new XMLHttpRequest(),
+				requestQuestion:function(qnumber){
+					//var subjectcode=subcode;
+                    //alert(qnumber);
+                    document.getElementById("qnumber").value=qnumber;
+					this.xhr.onreadystatechange=this.renderQuestion;
+					this.xhr.open("GET","process_q.php?qnumber="+qnumber,true);
+					this.xhr.send();
+				},
+				renderQuestion:function(){
+					if(this.readyState==4 && this.status==200){
+						var res=this.responseText;
+                        //alert(res);
+						/*The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string. */
+						var resJSON=JSON.parse(res);
+                        //var par = document.getElementById("resp");
+
+                        //document.getElementById("qnumber").value=qnumber;
+                        document.getElementById("q").value=resJSON.q;
+                        document.getElementById("a1").value=resJSON.a1;
+                        document.getElementById("a2").value=resJSON.a2;
+                        document.getElementById("a3").value=resJSON.a3;
+                        document.getElementById("a4").value=resJSON.a4;
+                        document.getElementById("diff").value=resJSON.diff;
+                        document.getElementById("avg").value=resJSON.avg;
+    
+                    }
+                }
+            }
+
+
+
+
+            var checkAns= {
+
+             xhr:new XMLHttpRequest(),
+				check:function(chosen_answer){
+					//var subjectcode=subcode;
+                    //alert(qnumber);
+                    var qnumber = document.getElementById("qnumber").value;
+                    var diff = document.getElementById("diff").value;
+                    document.getElementById("qnumber").value= parseFloat(qnumber)+1;
+                    var qnumber = document.getElementById("qnumber").value;
+					this.xhr.onreadystatechange=this.renderQ;
+					this.xhr.open("GET","process_q.php?ca="+chosen_answer+"&qnumber="+qnumber+"&diff="+diff,true);
+					this.xhr.send();
+				},
+				renderQ:function(){
+					if(this.readyState==4 && this.status==200){
+						var res=this.responseText;
+                        
+						/*The JSON.parse() method parses a JSON string, constructing the JavaScript value or object described by the string. */
+						var resJSON=JSON.parse(res);
+                        //var par = document.getElementById("resp");
+                        //var qnumber = document.getElementById("qnumber").value;
+                        //document.getElementById("qnumber").value= parseFloat(qnumber)+1;
+                        document.getElementById("q").value=resJSON.q;
+                        document.getElementById("a1").value=resJSON.a1;
+                        document.getElementById("a2").value=resJSON.a2;
+                        document.getElementById("a3").value=resJSON.a3;
+                        document.getElementById("a4").value=resJSON.a4;
+                        document.getElementById("diff").value=resJSON.diff;
+                        document.getElementById("avg").value=resJSON.avg;
+                        document.getElementById("cw").value=resJSON.cw;
+    
+                    }
+                }
+            }
+
+
+        </script>
+    </head>
+    <body onload="ques.requestQuestion(1)">
+        <input type="text" disabled="disabled" id="qnumber"/>
+        <input type="text" disabled="disabled" id="q"/>
+        <input type="button" id="a1" value="" onclick="checkAns.check(this.value)"/>
+        <input type="button" id="a2" value="" onclick="checkAns.check(this.value)"/>
+        <input type="button" id="a3" value="" onclick="checkAns.check(this.value)"/>
+        <input type="button" id="a4" value="" onclick="checkAns.check(this.value)"/>
+        <input type="text" disabled="disabled" id="diff"/>
+        <input type="text" disabled="disabled" id="avg"/>
+        <input type="text" disabled="disabled" id="cw"/>
+       
+    </body>
+</html>
